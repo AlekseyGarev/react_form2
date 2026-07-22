@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import Form from './components/Form'
+import DataTable from './components/DataTable'
 import './App.css'
 
-function App() {
+export default function App() {
   const [trainings, setTrainings] = useState([
     { id: '1', date: '20.07.2020', distance: 5.7 },
     { id: '2', date: '19.07.2020', distance: 12.0 },
@@ -56,72 +58,18 @@ function App() {
 
   return (
     <div className="container">
+      <Form 
+        dateInput={dateInput}
+        setDateInput={setDateInput}
+        distanceInput={distanceInput}
+        setDistanceInput={setDistanceInput}
+        onSubmit={handleSubmit}
+      />
 
-      <div className="form-container">
-        <form onSubmit={handleSubmit}>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="date">Дата (ДД.ММ.ГГГГ)</label>
-              <input 
-                type="text" 
-                id="date" 
-                value={dateInput}
-                onChange={(e) => setDateInput(e.target.value)}
-                placeholder="ДД.ММ.ГГГГ"
-                required 
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="distance">Пройдено км</label>
-              <input 
-                type="number" 
-                step="0.1" 
-                id="distance" 
-                value={distanceInput}
-                onChange={(e) => setDistanceInput(e.target.value)}
-                placeholder="0.0"
-                required 
-              />
-            </div>
-
-            <button type="submit" className="submit-btn">OK</button>
-          </div>
-        </form>
-      </div>
-
-      <div className="data-table">
-        <div className="table-header">
-          <div className="col-date">Дата</div>
-          <div className="col-distance">Пройдено км</div>
-          <div className="col-actions">Действия</div>
-        </div>
-
-        <div className="table-body">
-          {trainings.length === 0 ? (
-            <div className="empty-state">Нет данных о тренировках</div>
-          ) : (
-            trainings.map((item) => (
-              <div key={item.id} className="table-row">
-                <div className="col-date">{item.date}</div>
-                <div className="col-distance">{item.distance}</div>
-                <div className="col-actions">
-                  <button 
-                    type="button" 
-                    className="action-btn delete-btn" 
-                    onClick={() => handleDelete(item.id)}
-                    title="Удалить"
-                  >
-                    ✘
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      <DataTable 
+        trainings={trainings}
+        onDelete={handleDelete}
+      />
     </div>
   )
-}  
-
-export default App
+}
